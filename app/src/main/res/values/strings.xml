@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Climate Change</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="plantation">Plantation</string>
+    <string name="cfc">CFC</string>
+    <string name="learn_with_game">Learn With Game</string>
+    <string name="green_resources">Green Resources</string>
+    <string name="e_waste">E-Waste</string>
+</resources>

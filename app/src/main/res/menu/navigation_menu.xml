@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/ewaste"
+        android:icon="@drawable/e_waste"
+        android:title="@string/e_waste"/>
+
+    <item android:id="@+id/green_resource"
+        android:icon="@drawable/green_resources_icon"
+        android:title="@string/green_resources"/>
+
+    <item android:id="@+id/game"
+        android:icon="@drawable/games"
+        android:title="@string/learn_with_game"/>
+
+    <item android:id="@+id/carbon_footprint_cal"
+        android:icon="@drawable/cfc"
+        android:title="@string/cfc"/>
+
+    <item android:id="@+id/plantation"
+        android:icon="@drawable/plantation"
+        android:title="@string/plantation"/>
+
+</menu>
