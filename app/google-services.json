@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "883025492858",
+    "project_id": "climate-change-1c2f8",
+    "storage_bucket": "climate-change-1c2f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883025492858:android:97af17eda104942924b4c3",
+        "android_client_info": {
+          "package_name": "com.nabeel.climatechange"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "883025492858-40epkr2srr2drhahaphb4g18cl5dcnj8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nabeel.climatechange",
+            "certificate_hash": "a67a79cdeb1f1a08c69ed8062dc4ba0fe8e03c15"
+          }
+        },
+        {
+          "client_id": "883025492858-9lojriv6jucp1dffsd0beols0ob6n2js.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqaPhYt8TtNUEG88smZjayf8RW5vGEbCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "883025492858-9lojriv6jucp1dffsd0beols0ob6n2js.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
