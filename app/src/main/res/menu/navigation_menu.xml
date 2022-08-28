@@ -7,7 +7,7 @@
 
     <item android:id="@+id/green_resource"
         android:icon="@drawable/green_resources_icon"
-        android:title="@string/green_resources"/>
+        android:title="@string/news"/>
 
     <item android:id="@+id/game"
         android:icon="@drawable/games"

@@ -1,5 +1,6 @@
 package com.nabeel.climatechange.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nabeel.climatechange.R;
+import com.nabeel.climatechange.activities.AddPlantActivity;
 import com.nabeel.climatechange.databinding.FragmentGreenResourceBinding;
 import com.nabeel.climatechange.databinding.FragmentPlantationBinding;
 
@@ -36,6 +38,10 @@ public class PlantationFragment extends Fragment {
         activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolBar.textView.setText("My Plantations");
+
+        binding.addPlant.setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), AddPlantActivity.class));
+        });
 
         return view;
     }

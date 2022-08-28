@@ -14,6 +14,7 @@ import com.nabeel.climatechange.fragments.CarbonFootprintCalFragment;
 import com.nabeel.climatechange.fragments.EWasteFragment;
 import com.nabeel.climatechange.fragments.GreenResourceFragment;
 import com.nabeel.climatechange.fragments.HomeFragment;
+import com.nabeel.climatechange.fragments.NewsFragment;
 import com.nabeel.climatechange.fragments.PlantationFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.ewaste: temp=new EWasteFragment();
                     break;
-                    case R.id.green_resource: temp=new GreenResourceFragment();
+                    case R.id.green_resource: temp=new NewsFragment();
                     break;
                     case R.id.carbon_footprint_cal: temp=new CarbonFootprintCalFragment();
                     break;
@@ -47,5 +48,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (binding.bottomNavigation.getSelectedItemId()==R.id.ewaste){
+            super.onBackPressed();
+        }else {
+            binding.bottomNavigation.setSelectedItemId(R.id.ewaste);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new HomeFragment()).commit();
+        }
     }
 }

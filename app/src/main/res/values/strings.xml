@@ -7,4 +7,23 @@
     <string name="learn_with_game">Learn With Game</string>
     <string name="green_resources">Green Resources</string>
     <string name="e_waste">E-Waste</string>
+    <string name="select_activity">Select an activity</string>
+    <string name="button">Calculate</string>
+    <string name="textView4">%1$s</string>
+    <string name="textView3">%1$s</string>
+    <string name="empty"></string>
+    <string name="showResult">%1$d</string>
+    <string name="status">%1$s</string>
+    <string name="news">Articles</string>
+
+    <string-array name="activities">
+        <item>Select activity</item>
+        <item>Driving</item>
+        <item>Bus</item>
+        <item>Subway or train</item>
+        <item>Flight</item>
+        <item>Electricity use</item>
+        <item>Eating beef, pork, or lamb</item>
+        <item>Eating fruits or vegetables</item>
+    </string-array>
 </resources>

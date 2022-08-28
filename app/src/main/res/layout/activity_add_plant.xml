@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AddPlantActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/custom_tool_bar"/>
+
+    <LinearLayout
+        android:layout_below="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:text="Select Plant Name"/>
+
+        <LinearLayout
+            android:id="@+id/ll_spn_plant"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_below="@+id/textView"
+            android:background="@drawable/boader"
+            android:orientation="vertical"
+            android:padding="2dp">
+
+            <Spinner
+                android:id="@+id/spn_plant"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_plant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:text="Enter Plant Name"/>
+
+        <EditText
+            android:id="@+id/etxt_plant_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:visibility="gone"
+            android:background="@drawable/boader"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:text="Select City Name"/>
+
+        <LinearLayout
+            android:id="@+id/ll_city_spn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_below="@+id/textView"
+            android:background="@drawable/boader"
+            android:orientation="vertical"
+            android:padding="2dp">
+
+            <Spinner
+                android:id="@+id/spn_city"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            android:text="Take Picture"/>
+
+        <ImageView
+            android:id="@+id/camera"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/ic_baseline_photo_camera_24"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Submit"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
