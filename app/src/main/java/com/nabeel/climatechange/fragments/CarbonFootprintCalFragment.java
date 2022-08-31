@@ -49,8 +49,6 @@ public class CarbonFootprintCalFragment extends Fragment {
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(binding.toolBar.getRoot());
-        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolBar.textView.setText("Carbon Footprint Calculator");
         sharedPrefHelper = new SharedPrefHelper(getContext());
 

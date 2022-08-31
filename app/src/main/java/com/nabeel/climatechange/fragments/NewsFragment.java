@@ -60,8 +60,6 @@ public class NewsFragment extends Fragment {
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(binding.toolBar.getRoot());
-        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolBar.textView.setText("News");
         sharedPrefHelper= new SharedPrefHelper(getContext());
 

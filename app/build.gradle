@@ -7,6 +7,11 @@ plugins {
 android {
     compileSdk 32
 
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
     defaultConfig {
         applicationId "com.nabeel.climatechange"
         minSdk 21
