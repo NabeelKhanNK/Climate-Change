@@ -1,8 +1,11 @@
 package com.nabeel.climatechange.fragments;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,15 +16,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.nabeel.climatechange.R;
 import com.nabeel.climatechange.RestAPIs.ClientAPI;
 import com.nabeel.climatechange.RestAPIs.ClimateChange_API;
+import com.nabeel.climatechange.activities.LoginActivity;
 import com.nabeel.climatechange.adapter.NewsAdapter;
 import com.nabeel.climatechange.databinding.FragmentGreenResourceBinding;
 import com.nabeel.climatechange.databinding.FragmentNewsBinding;
 import com.nabeel.climatechange.model.News;
 import com.nabeel.climatechange.model.NewsModelClass;
+import com.nabeel.climatechange.utils.CommonClass;
+import com.nabeel.climatechange.utils.SharedPrefHelper;
 
 import java.util.ArrayList;
 
@@ -36,6 +43,7 @@ public class NewsFragment extends Fragment {
     ProgressDialog dialog;
     ArrayList<NewsModelClass> modelClassArrayList;
     NewsAdapter adapter;
+    SharedPrefHelper sharedPrefHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,13 +63,22 @@ public class NewsFragment extends Fragment {
         activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolBar.textView.setText("News");
+        sharedPrefHelper= new SharedPrefHelper(getContext());
+
+        binding.toolBar.logout.setOnClickListener(v -> {
+            logoutDialog();
+        });
 
         modelClassArrayList = new ArrayList<>();
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         adapter = new NewsAdapter(getContext(), modelClassArrayList);
         binding.rvNews.setLayoutManager(mLayoutManager);
         binding.rvNews.setAdapter(adapter);
-        getNews();
+        if (CommonClass.isInternetOn(getContext())) {
+            getNews();
+        }else {
+            Toast.makeText(activity, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+        }
 
         return view;
     }
@@ -69,7 +86,7 @@ public class NewsFragment extends Fragment {
     private void getNews(){
         dialog = ProgressDialog.show(getContext(), "", "Please wait...", true);
 
-        ClientAPI.getClient().create(ClimateChange_API.class).getNews("ClimateChange", ClientAPI.KEY).enqueue(new Callback<News>() {
+        ClientAPI.getClient().create(ClimateChange_API.class).getNews("climateChange", "en", ClientAPI.KEY).enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
                 try {
@@ -90,5 +107,25 @@ public class NewsFragment extends Fragment {
                 dialog.dismiss();
             }
         });
+    }
+
+    private void logoutDialog() {
+        new AlertDialog.Builder(getContext())
+                .setTitle(getString(R.string.logout))
+                .setMessage(getString(R.string.want_logout))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+//                        sharedPrefHelper.setString("isLogin","");
+                        Intent i = new Intent(getContext(),
+                                LoginActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                        sharedPrefHelper.setString("uid", "");
+                        sharedPrefHelper.setInt("isLogin",0);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(R.drawable.alerts)
+                .show();
     }
 }

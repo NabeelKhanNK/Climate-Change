@@ -1,11 +1,14 @@
 package com.nabeel.climatechange.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nabeel.climatechange.R;
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment temp=null;
                 switch (item.getItemId()){
-                    case R.id.ewaste: temp=new EWasteFragment();
+                    case R.id.home: temp=new HomeFragment();
                     break;
                     case R.id.green_resource: temp=new NewsFragment();
                     break;
@@ -42,9 +45,14 @@ public class MainActivity extends AppCompatActivity {
                     break;
                     case R.id.plantation: temp=new PlantationFragment();
                     break;
+                    case R.id.game:
+                        Toast.makeText(MainActivity.this, "This section not available", Toast.LENGTH_SHORT).show();
+                        break;
                 }
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, temp).commit();
+                if (temp!=null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, temp).commit();
+                }
                 return true;
             }
         });
@@ -52,10 +60,33 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (binding.bottomNavigation.getSelectedItemId()==R.id.ewaste){
-            super.onBackPressed();
+        if (binding.bottomNavigation.getSelectedItemId()==R.id.home){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setIcon(R.drawable.alerts);
+            builder.setTitle("Alert!");
+            builder.setMessage(R.string.are_you_sure_to_want_to_exit_application);
+            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //if user pressed "yes", then he is allowed to exit from application
+                    finishAffinity();
+                }
+            });
+
+
+            builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //if user select "No", just cancel this dialog and continue with app
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
         }else {
-            binding.bottomNavigation.setSelectedItemId(R.id.ewaste);
+            binding.bottomNavigation.setSelectedItemId(R.id.home);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new HomeFragment()).commit();
         }
     }

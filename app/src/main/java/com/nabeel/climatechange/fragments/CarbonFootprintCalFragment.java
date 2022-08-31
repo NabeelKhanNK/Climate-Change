@@ -1,8 +1,11 @@
 package com.nabeel.climatechange.fragments;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -19,7 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nabeel.climatechange.R;
+import com.nabeel.climatechange.activities.LoginActivity;
 import com.nabeel.climatechange.databinding.FragmentCarbonFootprintCalBinding;
+import com.nabeel.climatechange.utils.SharedPrefHelper;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -28,6 +33,7 @@ public class CarbonFootprintCalFragment extends Fragment {
 
     FragmentCarbonFootprintCalBinding binding;
     int selection = 0;
+    SharedPrefHelper sharedPrefHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,11 @@ public class CarbonFootprintCalFragment extends Fragment {
         activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolBar.textView.setText("Carbon Footprint Calculator");
+        sharedPrefHelper = new SharedPrefHelper(getContext());
 
+        binding.toolBar.logout.setOnClickListener(v -> {
+            logoutDialog();
+        });
 
         String[] list = getResources().getStringArray(R.array.activities);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, list);
@@ -185,5 +195,25 @@ public class CarbonFootprintCalFragment extends Fragment {
                 })
                 .show();
         pDialog.setCancelable(false);
+    }
+
+    private void logoutDialog() {
+        new AlertDialog.Builder(getContext())
+                .setTitle(getString(R.string.logout))
+                .setMessage(getString(R.string.want_logout))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+//                        sharedPrefHelper.setString("isLogin","");
+                        Intent i = new Intent(getContext(),
+                                LoginActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                        sharedPrefHelper.setString("uid", "");
+                        sharedPrefHelper.setInt("isLogin",0);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(R.drawable.alerts)
+                .show();
     }
 }

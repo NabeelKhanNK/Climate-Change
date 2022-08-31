@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/ewaste"
-        android:icon="@drawable/e_waste"
-        android:title="@string/e_waste"/>
+    <item android:id="@+id/home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/home"/>
 
     <item android:id="@+id/green_resource"
         android:icon="@drawable/green_resources_icon"
