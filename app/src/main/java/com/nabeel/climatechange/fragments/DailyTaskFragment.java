@@ -15,20 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.nabeel.climatechange.R;
-import com.nabeel.climatechange.activities.AddPlantActivity;
 import com.nabeel.climatechange.activities.LoginActivity;
-import com.nabeel.climatechange.adapter.NewsAdapter;
 import com.nabeel.climatechange.adapter.PlantAdapter;
-import com.nabeel.climatechange.databinding.FragmentGreenResourceBinding;
+import com.nabeel.climatechange.adapter.TaskAdapter;
+import com.nabeel.climatechange.databinding.FragmentDailyTaskBinding;
 import com.nabeel.climatechange.databinding.FragmentPlantationBinding;
+import com.nabeel.climatechange.interfaces.ItemClickListener;
 import com.nabeel.climatechange.model.Plant;
+import com.nabeel.climatechange.model.TaskPojo;
 import com.nabeel.climatechange.utils.AlertDialogClass;
 import com.nabeel.climatechange.utils.CommonClass;
 import com.nabeel.climatechange.utils.SharedPrefHelper;
@@ -36,13 +36,14 @@ import com.nabeel.climatechange.utils.SharedPrefHelper;
 import java.util.ArrayList;
 
 
-public class PlantationFragment extends Fragment {
+public class DailyTaskFragment extends Fragment {
 
-    FragmentPlantationBinding binding;
-    ArrayList<Plant> plantArrayList;
-    DatabaseReference databaseReference;
-    PlantAdapter adapter;
+    FragmentDailyTaskBinding binding;
     SharedPrefHelper sharedPrefHelper;
+    ArrayList<TaskPojo> taskArrayList;
+    DatabaseReference databaseReference;
+    TaskAdapter adapter;
+    ItemClickListener clickListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,44 +55,56 @@ public class PlantationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentPlantationBinding.inflate(inflater, container, false);
+        binding = FragmentDailyTaskBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(binding.toolBar.getRoot());
-        binding.toolBar.textView.setText("My Plantations");
+        binding.toolBar.textView.setText("Daily Task");
         sharedPrefHelper = new SharedPrefHelper(getContext());
 
-        binding.addPlant.setOnClickListener(v -> {
-            startActivity(new Intent(getContext(), AddPlantActivity.class));
-        });
+        clickListener = new ItemClickListener() {
+            @Override
+            public void onClick(int pos, String title, String desc) {
+                TaskFragment taskFragment = new TaskFragment();
+                Bundle args = new Bundle();
+                args.putString("task_title",title);
+                args.putString("task_desc",desc);
+                taskFragment.setArguments(args);
+                taskFragment.show(getFragmentManager(), taskFragment.getTag());
+            }
+        };
 
         binding.toolBar.logout.setOnClickListener(v -> {
             logoutDialog();
         });
 
-        String node = FirebaseAuth.getInstance().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference("plant").child(node);
-        plantArrayList = new ArrayList<>();
+        databaseReference = FirebaseDatabase.getInstance().getReference("daily_task");  //CommonClass.getCurrentDay()
+        taskArrayList = new ArrayList<>();
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        adapter = new PlantAdapter(getContext(), plantArrayList);
-        binding.rvPlant.setLayoutManager(mLayoutManager);
-        binding.rvPlant.setAdapter(adapter);
+        adapter = new TaskAdapter(getContext(), taskArrayList, clickListener);
+        binding.rvTask.setLayoutManager(mLayoutManager);
+        binding.rvTask.setAdapter(adapter);
 
+        getDailyTasks();
+
+        return view;
+    }
+
+    private void getDailyTasks(){
         if (CommonClass.isInternetOn(getContext())) {
             AlertDialogClass.showProgressDialog(getContext());
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    plantArrayList.clear();
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Plant plant = dataSnapshot.getValue(Plant.class);
-                        plantArrayList.add(plant);
-                    }
+                    taskArrayList.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            TaskPojo taskPojo = dataSnapshot.getValue(TaskPojo.class);
+                            taskArrayList.add(taskPojo);
+                        }
                     AlertDialogClass.dismissProgressDialog();
                     adapter.notifyDataSetChanged();
-
                 }
 
                 @Override
@@ -100,10 +113,8 @@ public class PlantationFragment extends Fragment {
                 }
             });
         }else {
-            Toast.makeText(activity, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
         }
-
-        return view;
     }
 
     private void logoutDialog() {

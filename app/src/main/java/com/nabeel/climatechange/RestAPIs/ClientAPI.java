@@ -23,8 +23,8 @@ public class ClientAPI {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.NONE);
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(60000, TimeUnit.SECONDS)
-                .readTimeout(60000, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(logging).build();
 
         Gson gson = new GsonBuilder()
@@ -44,8 +44,8 @@ public class ClientAPI {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.NONE);
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(60000, TimeUnit.SECONDS)
-                .readTimeout(60000, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(logging).build();
 
         Gson gson = new GsonBuilder()

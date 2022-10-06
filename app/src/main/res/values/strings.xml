@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Climate Change</string>
+    <string name="app_name">Hack For Green</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="plantation">Plantation</string>
-    <string name="cfc">CFC</string>
+    <string name="cfc">GHG</string>
     <string name="learn_with_game">Learn With Game</string>
     <string name="green_resources">Green Resources</string>
     <string name="e_waste">E-Waste</string>
@@ -27,6 +27,8 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="are_you_sure_to_want_to_exit_application">Do you want to Exit?</string>
+    <string name="task">Task</string>
+    <string name="tag_line">Lets make earth greener</string>
 
     <string-array name="activities">
         <item>Select activity</item>

@@ -138,7 +138,7 @@ public class AddPlantActivity extends AppCompatActivity {
     }
 
     private void sendDataToServer() {
-        Plant plant = new Plant(plant_name, city_name, photo);
+        Plant plant = new Plant(plant_name, city_name, photo, CommonClass.getCurrentDate());
         FirebaseDatabase.getInstance().getReference("plant")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(CommonClass.getUniqueId())
                 .setValue(plant).addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -42,6 +42,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull PlantAdapter.ViewHolder holder, int position) {
         holder.binding.plantName.setText(plantArrayList.get(position).getPlant_name());
         holder.binding.cityName.setText(plantArrayList.get(position).getState_name());
+        holder.binding.plantationDate.setText(plantArrayList.get(position).getDate());
         if (!plantArrayList.get(position).getImage().equals("")) {
             byte[] decodedString = Base64.decode(plantArrayList.get(position).getImage(), Base64.NO_WRAP);
             InputStream inputStream = new ByteArrayInputStream(decodedString);

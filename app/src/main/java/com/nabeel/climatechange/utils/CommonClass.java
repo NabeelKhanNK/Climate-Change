@@ -36,4 +36,24 @@ public class CommonClass {
 
         return tchdID;
     }
+
+    public static String getCurrentDay() {
+        Date date1 = new Date();
+        //Calendar calUUID = Calendar.getInstance();
+        DateFormat dateFormatUUID = new SimpleDateFormat("dd");
+        String uuuid= dateFormatUUID.format(date1);
+        String tchdID=uuuid;
+
+        return tchdID;
+    }
+
+    public static String getCurrentDate() {
+        Date date1 = new Date();
+        //Calendar calUUID = Calendar.getInstance();
+        DateFormat dateFormatUUID = new SimpleDateFormat("dd-MM-yyyy");
+        String uuuid= dateFormatUUID.format(date1);
+        String tchdID=uuuid;
+
+        return tchdID;
+    }
 }

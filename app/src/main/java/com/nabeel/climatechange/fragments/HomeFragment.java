@@ -1,7 +1,6 @@
 package com.nabeel.climatechange.fragments;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,21 +12,21 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nabeel.climatechange.R;
 import com.nabeel.climatechange.RestAPIs.ClientAPI;
 import com.nabeel.climatechange.RestAPIs.ClimateChange_API;
 import com.nabeel.climatechange.activities.LoginActivity;
 import com.nabeel.climatechange.databinding.FragmentHomeBinding;
-import com.nabeel.climatechange.databinding.FragmentNewsBinding;
 import com.nabeel.climatechange.model.AQIModelClass;
 import com.nabeel.climatechange.model.AirQualityIndex;
 import com.nabeel.climatechange.model.News;
@@ -57,6 +56,8 @@ public class HomeFragment extends Fragment {
     boolean isGPS=false;
     String lat="0.0",lon="0.0";
     SharedPrefHelper sharedPrefHelper;
+    DatabaseReference databaseReference;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class HomeFragment extends Fragment {
         activity.setSupportActionBar(binding.toolBar.getRoot());
         binding.toolBar.textView.setText("Home");
         sharedPrefHelper = new SharedPrefHelper(getContext());
+        databaseReference = FirebaseDatabase.getInstance().getReference("daily_tips").child(CommonClass.getCurrentDay());
 
         binding.toolBar.logout.setOnClickListener(v -> {
             logoutDialog();
@@ -84,6 +86,8 @@ public class HomeFragment extends Fragment {
         aqiModelClassArrayList = new ArrayList<>();
 
         getNews();
+
+        getDailyTips();
 
         binding.btnAqi.setOnClickListener(v -> {
 
@@ -138,6 +142,39 @@ public class HomeFragment extends Fragment {
                 Log.d("fail", ""+t);
             }
         });
+    }
+
+    private void getDailyTips(){
+        if (CommonClass.isInternetOn(getContext())) {
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        for (int i = 0; i < snapshot.getKey().length(); i++) {
+                            String title = snapshot.child("title").getValue().toString();
+                            String description = snapshot.child("description").getValue().toString();
+                            description = description.replace("\\n", "\n");
+                            binding.tipTitle.setText(title);
+                            binding.tipDescription.setText(description);
+                            binding.rlErrorMssg.setVisibility(View.GONE);
+                            binding.tipTitle.setVisibility(View.VISIBLE);
+                            binding.tipDescription.setVisibility(View.VISIBLE);
+                        }
+                    }else {
+                        binding.rlErrorMssg.setVisibility(View.VISIBLE);
+                        binding.tipTitle.setVisibility(View.GONE);
+                        binding.tipDescription.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }else {
+            Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getAQI(){

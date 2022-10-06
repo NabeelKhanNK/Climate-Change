@@ -14,8 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nabeel.climatechange.R;
 import com.nabeel.climatechange.databinding.ActivityMainBinding;
 import com.nabeel.climatechange.fragments.CarbonFootprintCalFragment;
-import com.nabeel.climatechange.fragments.EWasteFragment;
-import com.nabeel.climatechange.fragments.GreenResourceFragment;
+import com.nabeel.climatechange.fragments.DailyTaskFragment;
 import com.nabeel.climatechange.fragments.HomeFragment;
 import com.nabeel.climatechange.fragments.NewsFragment;
 import com.nabeel.climatechange.fragments.PlantationFragment;
@@ -45,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                     case R.id.plantation: temp=new PlantationFragment();
                     break;
-                    case R.id.game:
-                        Toast.makeText(MainActivity.this, "This section not available", Toast.LENGTH_SHORT).show();
+                    case R.id.game: temp=new DailyTaskFragment();
+//                        Toast.makeText(MainActivity.this, "This section not available", Toast.LENGTH_SHORT).show();
                         break;
                 }
 
@@ -56,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
     }
 
     @Override
