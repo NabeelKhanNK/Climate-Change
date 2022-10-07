@@ -1,6 +1,7 @@
 package com.nabeel.climatechange.model;
 
 public class TaskPojo {
+    private Long id;
     private String title;
     private String description;
     private String created_at;
@@ -9,12 +10,21 @@ public class TaskPojo {
 
     public TaskPojo() {}
 
-    public TaskPojo(String title, String description, String created_at, String exp_date, String img) {
+    public TaskPojo(Long id, String title, String description, String created_at, String exp_date, String img) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.created_at = created_at;
         this.exp_date = exp_date;
         this.img = img;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {

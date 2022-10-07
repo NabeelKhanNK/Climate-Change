@@ -65,11 +65,12 @@ public class DailyTaskFragment extends Fragment {
 
         clickListener = new ItemClickListener() {
             @Override
-            public void onClick(int pos, String title, String desc) {
+            public void onClick(int pos,Long id, String title, String desc) {
                 TaskFragment taskFragment = new TaskFragment();
                 Bundle args = new Bundle();
                 args.putString("task_title",title);
                 args.putString("task_desc",desc);
+                args.putString("task_id", String.valueOf(id));
                 taskFragment.setArguments(args);
                 taskFragment.show(getFragmentManager(), taskFragment.getTag());
             }

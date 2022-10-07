@@ -16,12 +16,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nabeel.climatechange.R;
+import com.nabeel.climatechange.activities.AddPlantActivity;
 import com.nabeel.climatechange.databinding.FragmentDailyTaskBinding;
 import com.nabeel.climatechange.databinding.FragmentTaskBinding;
+import com.nabeel.climatechange.model.Plant;
+import com.nabeel.climatechange.model.TaskPojo;
+import com.nabeel.climatechange.model.UserTaskDataPojo;
+import com.nabeel.climatechange.utils.CommonClass;
 
 
 public class TaskFragment extends BottomSheetDialogFragment {
@@ -70,6 +79,15 @@ public class TaskFragment extends BottomSheetDialogFragment {
             binding.taskTitle.setText(getArguments().getString("task_title"));
             binding.taskDetails.setText(getArguments().getString("task_desc"));
         }
+
+        binding.btnSubmit.setOnClickListener(v -> {
+            if (binding.etTask.getText().toString().trim().length()!=0) {
+                sendTaskData();
+            }else {
+                binding.etTask.setError("This field is required");
+            }
+        });
+
         return rootView;
     }
 
@@ -86,5 +104,22 @@ public class TaskFragment extends BottomSheetDialogFragment {
 
     }
 
+    private void sendTaskData(){
+        UserTaskDataPojo userTask = new UserTaskDataPojo(binding.etTask.getText().toString().trim(), CommonClass.getCurrentDate(), "Task Completed");
+        FirebaseDatabase.getInstance().getReference("user_task_data")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(getArguments().getString("task_id"))
+                .setValue(userTask).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(getContext(), "Task Completed Successfully!", Toast.LENGTH_SHORT).show();
+                            bottomSheetBehavior = BottomSheetBehavior.from((View) rootView.getParent());
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        }else {
+                            Toast.makeText(getContext(), "Please try again!`", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
 }
