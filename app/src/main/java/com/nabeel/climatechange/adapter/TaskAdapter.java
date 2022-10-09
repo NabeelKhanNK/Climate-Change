@@ -1,9 +1,14 @@
 package com.nabeel.climatechange.adapter;
 
+import static android.graphics.Color.YELLOW;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,6 +65,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return new ViewHolder(binding.getRoot());
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.binding.taskTitle.setText(taskArrayList.get(position).getTitle());
@@ -75,15 +81,24 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 Log.d("Exception", "" + e);
             }
         }
+
+        if (taskArrayList.get(position).getCreated_at().equals("") && taskArrayList.get(position).getExp_date().equals("")){
+            holder.binding.taskStatus.setText("Upcoming Task");
+            holder.binding.taskStatus.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFC107")));
+        }
+
         databaseReference = FirebaseDatabase.getInstance().getReference("user_task_data").child(FirebaseAuth.getInstance().getUid()).child(String.valueOf(taskArrayList.get(position).getId()));
         getTaskStatus(taskArrayList.get(position).getId(), holder.binding.taskStatus);
 
 
             holder.binding.cvView.setOnClickListener(v -> {
-                if (!holder.binding.taskStatus.getText().toString().equals("Completed")) {
-                    itemClickListener.onClick(position, taskArrayList.get(position).getId(), taskArrayList.get(position).getTitle(), desc);
+                String task_status = holder.binding.taskStatus.getText().toString();
+                if (task_status.equals("Upcoming Task")){
+                    showPopupForUpcomingTask();
+                }else if (holder.binding.taskStatus.getText().toString().equals("Completed")) {
+                    showPopupForCompletedTask();
                 }else {
-                    showPopup();
+                    itemClickListener.onClick(position, taskArrayList.get(position).getId(), taskArrayList.get(position).getTitle(), desc);
                 }
             });
     }
@@ -125,7 +140,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         }
     }
 
-    private void showPopup() {
+    private void showPopupForCompletedTask() {
         final SweetAlertDialog pDialog = new SweetAlertDialog(
                 context, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
         //new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
@@ -133,6 +148,24 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 .setContentText("This task already completed by you.")
                 .setConfirmText("OK")
                 .setCustomImage(R.drawable.tick_mark)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismiss();
+                    }
+                })
+                .show();
+        pDialog.setCancelable(false);
+    }
+
+    private void showPopupForUpcomingTask() {
+        final SweetAlertDialog pDialog = new SweetAlertDialog(
+                context, SweetAlertDialog.WARNING_TYPE);
+        //new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+        pDialog.setTitleText("Upcoming Task")
+                .setContentText("This task is not active. Please wait for it or checkout other tasks :)")
+                .setConfirmText("OK")
+//                .setCustomImage(R.drawable.tick_mark)
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
